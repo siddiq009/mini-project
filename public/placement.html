@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Placement Dashboard</title>
+   <style>
+    body{
+    
+    background-color: white;
+    margin:0;
+    height:100vh;
+    
+}
+header{
+    background-color: black;
+    
+    padding:20px;
+    
+    font-size: 20px;
+    text-align: center;
+    
+}
+header li{
+    display: inline;
+    margin-right: 20px;
+}
+header nav a{
+    
+    text-decoration: none;
+    color:rgb(71, 14, 170);
+    font-weight: bold;
+}
+section{
+    
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   
+    background-image: url("project images/placement bck image.jpg");
+    background-repeat: none;
+    background-position:center;
+    background-size: cover;
+    padding:20px;
+    margin: 0;
+    height:800px;
+    width:100%;
+}
+@media(max-width:768px) {
+    section{
+        background-size: contain;
+    }
+}
+section nav a{
+    font-size: 40px;
+    margin-bottom: 10px;
+    color:rgb(11, 2, 64);
+    text-decoration: none;
+   
+}
+section li{
+    margin-bottom: 10px;
+    text-align: center;
+    margin-left: 100px;
+    
+}
+footer {
+    display: flex;  
+    font-size: 30px;       
+           /* Use flexbox layout */
+    justify-content: center;      /* Center content horizontally */
+    align-items: center;          /* Center content vertically */
+    padding: 10px;                /* Padding inside the footer */
+    background-color: black;      /* Footer background color */
+    color: white;                 /* Text color */
+    height: 100px;                /* Set a fixed height for the footer */
+    overflow: hidden; 
+    margin:0;            /* Hide overflow for the marquee effect */
+}
+
+.marquee {
+    display: inline-block;        /* Inline-block to allow width manipulation */
+    white-space: nowrap;          /* Prevent line breaks */
+    animation: marquee 5s linear infinite;  /* Animation properties */
+}
+
+@keyframes marquee {
+    0% { transform: translateX(100%); }  /* Start from the right */
+    100% { transform: translateX(-100%); } /* Move to the left */
+}
+   </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <li><a href="#" onclick="navigateTo('index2.html')">Home</a></li>
+            <li><a href="#" onclick="navigateTo('contact.html')">Contact</a></li>
+            <li><a href="#" onclick="navigateTo('aboutus.html')">About Us</a></li>
+            <li><a href="#" onclick="navigateTo('logout.html')">Logout</a></li>
+        </nav>
+    </header>
+    <section>
+        <nav>
+            <ul>
+                <li><a href="index2.html" onclick="navigateTo('aiml.html')"><b>AIML</b></a></li> <!-- This will open aiml.html -->
+                <li><a href="index2.html" onclick="navigateTo('cse_a.html')"><b>CSE-A</b></a></li>
+                <li><a href="index2.html" onclick="navigateTo('cse_b.html')"><b>CSE-B</b></a></li>
+                <li><a href="index2.html" onclick="navigateTo('cse_c.html')"><b>CSE-C</b></a></li>
+            </ul>
+        </nav>
+    </section>
+<footer>
+    <div class="marquee">
+        <b>vigananlara@gmail.com</b>
+    </div></footer>
+</footer>
+</body>
+</html>

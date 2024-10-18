@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url("project images/background image2.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+
+        .signup-container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            z-index: 2;
+            position: relative;
+        }
+
+        h2 {
+            font-size: 40px;
+            text-align: center;
+        }
+
+        .signup-container input[type="text"],
+        .signup-container input[type="password"],
+        .signup-container input[type="email"] {
+            font-size: 20px;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .signup-container button {
+            width: 100%;
+            font-size: 20px;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .signup-container button:hover {
+            background-color: #45a049;
+        }
+
+        .error {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        label {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .user-select {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="signup-container">
+    <h2>Sign Up</h2>
+
+    <!-- Dropdown to select user -->
+    <div class="user-select">
+        <label for="userRole">Select User:</label>
+        <select id="userRole">
+            <option value="Student">Student</option>
+            <option value="Admin">Admin</option>
+            <option value="Deo">Deo</option>
+            <option value="Placement">Placement</option>
+        </select>
+    </div>
+
+    <!-- Sign-up Form -->
+    <form id="signupForm">
+        <label>Full Name:</label><br><br>
+        <input type="text" id="fullName" placeholder="Enter Full Name" required><br>
+        
+        <label>Email:</label><br><br>
+        <input type="email" id="email" placeholder="Enter Email" required><br>
+        
+        <label>Username:</label><br><br>
+        <input type="text" id="username" placeholder="Enter Username" required><br>
+        
+        <label>Password:</label><br><br>
+        <input type="password" id="password" placeholder="Enter Password" required><br>
+
+        <label>Confirm Password:</label><br><br>
+        <input type="password" id="confirmPassword" placeholder="Confirm Password" required><br>
+
+        <button type="button" onclick="validateSignup()">Sign Up</button>
+        <div id="errorMessage" class="error"></div>
+        <a href="login.html">Already have an account? Login</a>
+    </form>
+</div>
+
+<script>
+    function validateSignup() {
+        var fullName = document.getElementById("fullName").value;
+        var email = document.getElementById("email").value;
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+        var confirmPassword = document.getElementById("confirmPassword").value;
+        var selectedRole = document.getElementById("userRole").value;
+        var errorMessage = document.getElementById("errorMessage");
+
+        if (password !== confirmPassword) {
+            errorMessage.innerHTML = "Passwords do not match!";
+            return;
+        }
+
+        // Sending the signup data to the server using Fetch API
+        fetch('/signup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                fullName: fullName,
+                email: email,
+                username: username,
+                password: password,
+                role: selectedRole
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                window.location.href = 'login.html';
+            } else {
+                errorMessage.innerHTML = data.message || "Error signing up!";
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            errorMessage.innerHTML = "An error occurred while signing up.";
+        });
+    }
+</script>
+
+</body>
+</html>
