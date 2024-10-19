@@ -25,8 +25,6 @@ db.connect((err) => {
     console.log('Connected to the MySQL database.');
 });
 
-
-
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
@@ -35,13 +33,15 @@ app.post('/signup', (req, res) => {
     const { fullName, email, username, password, role } = req.body;
 
     console.log('New signup request:', req.body);
-
+    
     // Hash the password before storing it
     bcrypt.hash(password, saltRounds, (err, hashedPassword) => {
         if (err) {
             console.error('Error hashing password:', err);
             return res.status(500).json({ success: false, message: 'Error signing up!' });
         }
+
+        console.log('Hashed password:', hashedPassword);  // Now inside the callback after hashing is complete
 
         // SQL query to insert a new user with the hashed password
         const query = 'INSERT INTO users (fullName, email, username, password, role) VALUES (?, ?, ?, ?, ?)';
@@ -63,59 +63,52 @@ app.post('/signup', (req, res) => {
     });
 });
 
-// Endpoint for handling login
 app.post('/login', (req, res) => {
-    const { username, password, role } = req.body;
+    const username = req.body.username ? req.body.username.trim() : '';
+    const password = req.body.password ? req.body.password.trim() : '';
+    const role = req.body.role ? req.body.role.trim() : '';
 
-    console.log('Login request received:', req.body);  // Logs the credentials received from the frontend
+    if (!username || !password || !role) {
+        return res.status(400).json({ error: 'Username, password, and role are required.' });
+    }
 
-    // Step 2: SQL query to check if the user exists and retrieve the stored password
     const query = 'SELECT * FROM users WHERE username = ? AND role = ?';
-
-    // Debug: Log the query parameters
-    console.log('Running query:', query, [username, role]);
-
-    // Executing the query
     db.query(query, [username, role], (err, results) => {
         if (err) {
-            console.error('Error during login query:', err);
-            return res.status(500).json({ success: false, message: 'Error during login!' });
+            console.error('Error during login:', err);
+            return res.status(500).json({ error: 'Internal server error' });
         }
 
-        console.log('Query result:', results); // Debug: Show the result of the query
-
-        if (results.length > 0) {
-            const user = results[0];  // Take the first result if user is found
-
-            // Step 3: Compare the entered password with the stored hashed password
-            bcrypt.compare(password, user.password, (err, isMatch) => {
-                if (err) {
-                    console.error('Error comparing passwords:', err);
-                    return res.status(500).json({ success: false, message: 'Error logging in!' });
-                }
-
-                if (isMatch) {
-                    // Login successful
-                    console.log('Password matched for user:', username);
-                    res.status(200).json({
-                        success: true,
-                        redirectPage: '/index2.html'  // Send the redirect URL upon successful login
-                    });
-                } else {
-                    // Password doesn't match
-                    console.log('Invalid password for user:', username);
-                    res.status(401).json({ success: false, message: 'Invalid username or password!' });
-                }
-            });
-        } else {
-            // No user found with the provided username and role
-            console.log('User not found for username:', username);
-            res.status(404).json({ success: false, message: 'User not found!' });
+        if (results.length === 0) {
+            return res.status(401).json({ error: 'Invalid username, password, or role.' });
         }
+
+        const user = results[0];
+
+        bcrypt.compare(password, user.password, (err, result) => {
+            if (err) {
+                console.error('Error comparing passwords:', err);
+                return res.status(500).json({ error: 'Internal server error' });
+            }
+
+            if (result) {
+                // Password matches, send success response with redirection URL
+                res.status(200).json({
+                    success: true,
+                    message: 'Login successful',
+                    redirectPage: '/index2.html' // Redirect to index2.html on successful login
+                });
+            } else {
+                // Invalid credentials
+                res.status(401).json({ error: 'Invalid username, password, or role.' });
+            }
+        });
     });
 });
+
 
 // Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
+   
 });

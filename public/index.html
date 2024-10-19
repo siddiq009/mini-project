@@ -121,12 +121,11 @@
 
 <script>
     function validateLogin() {
-    var username = document.getElementById("username").value;
-    var password = document.getElementById("password").value;
-    var selectedRole = document.getElementById("userRole").value;
+    var username = document.getElementById("username").value.trim();
+    var password = document.getElementById("password").value.trim();
+    var selectedRole = document.getElementById("userRole").value.trim();
     var errorMessage = document.getElementById("errorMessage");
 
-    // Sending the login credentials to the server using Fetch API
     fetch('/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -138,14 +137,12 @@
     })
     .then(response => response.json())
     .then(data => {
-        console.log(data);  // Check if you are receiving the correct response from the server
-
         if (data.success) {
-            // If login was successful, redirect to the appropriate page based on the server response
+            // Redirect to the appropriate page if successful
             window.location.href = data.redirectPage;
         } else {
-            // If login failed, show the error message
-            errorMessage.innerHTML = data.message;  // Display server message (e.g., 'Invalid username or password!')
+            // Show error message
+            errorMessage.innerHTML = data.message;
         }
     })
     .catch(error => {
