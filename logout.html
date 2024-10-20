@@ -3,56 +3,157 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multiple Logins</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Logout Page</title>
+    <style>
+        /* Background image and opacity */
+        body {
+            
+            font-family: Arial, sans-serif;
+            background-image: url("project images/background image2.jpg"); /* Replace with your image URL */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Adding a dark overlay with opacity on the background */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5); /* Adjust opacity (0.5 = 50% opacity) */
+            z-index: 1;
+        }
+
+        .login-container {
+            
+            background-color: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            z-index: 2; /* Ensures login container is above the overlay */
+            position: relative;
+        }
+
+        h2 {
+            font-size: 40px;
+            text-align: center;
+        }
+
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            font-size: 20px;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .login-container button {
+            width: 100%;
+            font-size: 20px;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .login-container button:hover {
+            background-color: #45a049;
+        }
+
+        .error {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        label {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .user-select {
+            margin-bottom: 15px;
+            
+        }
+    </style>
 </head>
 <body>
-    <header><h1>Student Recruitment Hub</h1></header>
-    <section>
-        <!-- Login Form 1 -->
-        <div class="login-form">
-            <h2><b>Placement Login</b></h2>
-            <form onsubmit="return validateLogin('placement');">
-                <input type="text" id="username1" placeholder="Username" required><br>
-                <input type="password" id="password1" placeholder="Password" required><br>
-                <button type="submit">Login</button>
-                <p id="error-message1"></p> 
-            </form>
-        </div>
 
-        <!-- Login Form 2 -->
-        <div class="login-form">
-            <h2><b>Deo Login</b></h2>
-            <form onsubmit="return validateLogin('deo');">
-                <input type="text" id="username2" placeholder="Username" required><br>
-                <input type="password" id="password2" placeholder="Password" required><br>
-                <button type="submit">Login</button>
-                <p id="error-message2"></p> 
-            </form>
-        </div>
+<div class="login-container">
+    <h2>Login</h2>
 
-        <!-- Login Form 3 -->
-        <div class="login-form">
-            <h2><b>Admin Login</b></h2>
-            <form onsubmit="return validateLogin('admin');">
-                <input type="text" id="username3" placeholder="Username" required><br>
-                <input type="password" id="password3" placeholder="Password" required><br>
-                <button type="submit">Login</button>
-                <p id="error-message3"></p> 
-            </form>
-        </div>
+    <!-- Dropdown to select user -->
+    <div class="user-select">
+        <label for="userRole">Select User:</label>
+        <select id="userRole" onchange="updateUserLabel()">
+            <option value="Student">Student</option>
+            <option value="Admin">Admin</option>
+            <option value="Deo">Deo</option>
+            <option value="Placement">Placement</option>
+        </select>
+    </div>
 
-        <!-- Login Form 4 -->
-        <div class="login-form">
-            <h2><b>Student Login</b></h2>
-            <form onsubmit="return validateLogin('student');">
-                <input type="text" id="username4" placeholder="Username" required><br>
-                <input type="password" id="password4" placeholder="Password" required><br>
-                <button type="submit">Login</button>
-                <p id="error-message4"></p> 
-            </form>
-        </div>
-    </section>
-    <script src="first.js"></script>
+    <!-- Login Form with dynamic user label -->
+    <form id="loginForm">
+        <label id="userLabel">Login as: Student</label><br><br>
+        <input type="text" id="username" placeholder="Enter Username" required><br>
+        <input type="password" id="password" placeholder="Enter Password" required><br>
+        <button type="button" onclick="validateLogin()">Login</button>
+        <div id="errorMessage" class="error"></div>
+        <a href="signup.html">Don't have an account? Sign up</a>
+    </form>
+</div>
+
+<script>
+    function validateLogin() {
+    var username = document.getElementById("username").value.trim();
+    var password = document.getElementById("password").value.trim();
+    var selectedRole = document.getElementById("userRole").value.trim();
+    var errorMessage = document.getElementById("errorMessage");
+
+    fetch('/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            username: username,
+            password: password,
+            role: selectedRole
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Redirect to the appropriate page if successful
+            window.location.href = data.redirectPage;
+        } else {
+            // Show error message
+            errorMessage.innerHTML = data.message;
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        errorMessage.innerHTML = "An error occurred while logging in.";
+    });
+}
+
+
+</script>
+
+
 </body>
 </html>
