@@ -13,18 +13,22 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Database connection
+// Database connectionnodw
 const db = mysql.createConnection({
-    host: 'localhost',
+    host:'localhost',
     user: 'root',
-    password: 'Siddiq@1215', // Replace with your MySQL password
-    database: 'login_system' // The database you created
+    password: '1928', // Replace with your MySQL password
+    database: 'logindatabase' // The database you created
 });
 
 // Connect to the MySQL database
 db.connect((err) => {
-    if (err) throw err;
+    if (err) {
     console.log('Connected to the MySQL database.');
+    return;
+}
+console.log ('Error connecting to the database:',err);
+
 });
 
 const saltRounds = 10;
@@ -71,6 +75,7 @@ app.post('/signup', (req, res) => {
 });
 
 // Login route
+// Login route
 app.post('/login', (req, res) => {
     const username = req.body.username ? req.body.username.trim() : '';
     const password = req.body.password ? req.body.password.trim() : '';
@@ -102,11 +107,18 @@ app.post('/login', (req, res) => {
             }
 
             if (match) {
-                // Password matches, send success response
+                // Determine redirect page based on user role
+                let redirectPage;
+                if (user.role === 'Student') {
+                    redirectPage = '/index2.html'; // Redirect to Student page
+                } else {
+                    redirectPage = '/index3.html'; // Redirect for other roles
+                }
+
                 return res.status(200).json({
                     success: true,
                     message: 'Login successful',
-                    redirectPage: '/index2.html'
+                    redirectPage: redirectPage
                 });
             } else {
                 return res.status(401).json({ error: 'Invalid username, password, or role.' });
@@ -114,6 +126,7 @@ app.post('/login', (req, res) => {
         });
     });
 });
+
 
 // Endpoint to get attendance data
 app.get('/attendance', (req, res) => {

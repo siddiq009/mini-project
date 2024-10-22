@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Placement Dashboard</title>
-    <style>
-        body{
+ <style>
+    body{
     
     background-color: white;
     margin:0;
@@ -89,34 +89,40 @@ footer {
     0% { transform: translateX(100%); }  /* Start from the right */
     100% { transform: translateX(-100%); } /* Move to the left */
 }
-    </style>
+ </style>
 </head>
 <body>
     <header>
-        <nav><div></div>
-            <li><a href="index2.html">Home</a></li>
-            <li><a href="contact.html">Contact</a></li>
-            <li><a href="aboutus.html">About Us</a></li>
-            <li><a href="logout.html">Logout</a></li>
-        </div>
+        <nav>
+            <li><a href="#" onclick="navigateTo('index2.html')">Home</a></li>
+            <li><a href="#" onclick="navigateTo('contact.html')">Contact</a></li>
+            <li><a href="#" onclick="navigateTo('aboutus.html')">About Us</a></li>
+            <li><a href="index.html" onclick="navigateTo('logout.html')">Logout</a></li>
         </nav>
     </header>
-    </header>
-</body>
-<section>
-    <nav>
-        <ul>
-            <li><a href="#"><b>AIML</b></a></li>
-            <li><a href="#"><b>CSE-A</b></a></li>
-            <li><a href="#"><b>CSE-B</b></a></li>
-            <li><a href="#"><b>CSE-c</b></a></li>
+    <section>
+        <nav>
+            <ul>
+                <li><a href="index2.html" onclick="navigate('cse')"><b>CSE</b></a></li> 
+                <li><a href="index2.html" onclick="navigate('aiml')"><b>AIML</b></a></li>
+                <li><a href="index2.html" onclick="navigate('csd')"><b>CSD</b></a></li>
+                <li><a href="index2.html" onclick="navigate('CSM')"><b>CSM</b></a></li>
+                <li><a href="index2.html" onclick="navigate('CAI')"><b>CAI</b></a></li>
 
-        </ul>
-    </nav>
-</section>
+            </ul>
+        </nav>
+    </section>
 <footer>
     <div class="marquee">
         <b>vigananlara@gmail.com</b>
     </div></footer>
 </footer>
+
+<script>
+    function navigate(str, destionation){
+        document.cookie = str;
+        navigateTo("index2.html")
+    }
+</script>
+</body>
 </html>

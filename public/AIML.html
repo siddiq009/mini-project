@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIML</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #d4edda; /* Light green background */
+            text-align: center; /* Center text */
+        }
+        .button {
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+            background-color: #4d604d; /* Grey button color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        table {
+            border-collapse: collapse;
+            margin-top: 20px;
+            width: 100%;
+            background-color: white; /* White table background */
+            border: 1px solid black; /* Black border */
+        }
+        th, td {
+            border: 1px solid black; /* Black border for cells */
+            padding: 8px;
+            text-align: left;
+        }
+        #search {
+            margin-bottom: 20px;
+            padding: 10px;
+            width: 50%; /* Centered width */
+            max-width: 300px; /* Maximum width */
+            display: inline-block; /* Inline-block to center */
+        }
+    </style>
+    <script>
+        const students = [
+            { regdNo: '101', name: 'Alice', technicalAttendance: '95%', nonTechnicalAttendance: '80%' },
+            { regdNo: '102', name: 'Bob', technicalAttendance: '90%', nonTechnicalAttendance: '85%' }
+        ];
+
+        function showAttributes(type) {
+            const attributesDiv = document.getElementById('attributes');
+            attributesDiv.innerHTML = `
+                <table>
+                    <tr>
+                        <th>RegdNo</th>
+                        <th>Name</th>
+                        <th>Attendance Percentage</th>
+                    </tr>
+                    ${students.map(student => `
+                        <tr>
+                            <td>${student.regdNo}</td>
+                            <td>${student.name}</td>
+                            <td>${type === 'technical' ? student.technicalAttendance : student.nonTechnicalAttendance}</td>
+                        </tr>
+                    `).join('')}
+                </table>
+            `;
+        }
+
+        function searchStudent() {
+            const searchValue = document.getElementById('search').value;
+            const filteredStudents = students.filter(student => 
+                student.regdNo.includes(searchValue)
+            );
+
+            const attributesDiv = document.getElementById('attributes');
+            attributesDiv.innerHTML = `
+                <table>
+                    <tr>
+                        <th>RegdNo</th>
+                        <th>Name</th>
+                        <th>Attendance Percentage</th>
+                    </tr>
+                    ${filteredStudents.map(student => `
+                        <tr>
+                            <td>${student.regdNo}</td>
+                            <td>${student.name}</td>
+                            <td>${student.technicalAttendance}</td>
+                        </tr>
+                    `).join('')}
+                </table>
+            `;
+        }
+    </script>
+</head>
+<body>
+    <h1>AIML</h1>
+    <input type="text" id="search" placeholder="Search by RegdNo" oninput="searchStudent()">
+    <div>
+        <button class="button" onclick="showAttributes('technical')">Technical</button>
+        <button class="button" onclick="showAttributes('non-technical')">Non-Technical</button>
+    </div>
+    
+    <div id="attributes"></div>
+    <script>
+        const branch = document.cookie;
+        const data = fetchattendane(branch);
+        
+    </script>
+</body>
+</html>
