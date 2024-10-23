@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt');
 
 // Initialize the Express application
 const app = express();
-const PORT = 3000;
+
 
 // Middleware for serving static files and parsing request bodies
 app.use(express.static('public'));
@@ -17,18 +17,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const db = mysql.createConnection({
     host:'localhost',
     user: 'root',
-    password: '1928', // Replace with your MySQL password
-    database: 'logindatabase' // The database you created
+    password: 'mavasari@1928', // Replace with your MySQL password
+    database: 'user_accounts' // The database you created
 });
 
-// Connect to the MySQL database
-db.connect((err) => {
+db.connect(err => {
     if (err) {
-    console.log('Connected to the MySQL database.');
-    return;
-}
-console.log ('Error connecting to the database:',err);
-
+        console.error('Error connecting to the database:', err.message || err);
+        return;
+    }
+    console.log('Successfully connected to the database.');
 });
 
 const saltRounds = 10;
@@ -141,7 +139,7 @@ app.get('/attendance', (req, res) => {
 });
 
 
-// Start the server
+const PORT = process.env.PORT || 3001; // Change to 3001 or any available port
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });

@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <script src = "../aimldb.js" ></script> -->
-    <title>CSE</title>
+    <title id="title">CSE</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -43,46 +42,51 @@
     </style>
 </head>
 <body>
-    <h1 id = "title">CSE</h1>
+    <h1 id="title">CSE</h1>
     <input type="text" id="search" placeholder="Search by RegdNo" oninput="searchStudent()">
     <div>
-        <button class="button" onclick="showAttributes('technical')">Technical</button>
-        <button class="button" onclick="showAttributes('non-technical')">Non-Technical</button>
+        <button class="button" onclick="updateBranch('CSE')">Technical</button>
+        <button class="button" onclick="updateBranch('AIML')">Non-Technical</button>
     </div>
     
     <div id="attributes"></div>
     
-    <script>
-        const mysql = require('../mysql2');
-        const bcrypt = require('../bcrypt');
-        const saltRounds = 10;
+    <script type="module">
+        import mysql from './mysql2.js'; // Correct relative path
+        import bcrypt from './bcrypt.js'; // Correct relative path
 
+        let students = []; // Declare students variable
+        let currentBranch = 'CSE'; // Default branch
 
-
-        function fetchattendance(branch){
+        async function fetchAttendance() {
             const db = mysql.createConnection({
                 host: 'localhost',
-                user: 'root',// Replace with your MySQL password
+                user: 'root', // Replace with your MySQL user
                 database: 'attendancedb', // Your database name
-                password:"1928"
-            
+                password: "mavasari@1928" // Your MySQL password
             });
-            
-            const q = "SELECT * FROM `sTUDENT ATT`;"
-            db.query(q, (err, result)=>{
-                if (err){
-                    console.log("error occurred " + err);
-                }
-                else{
-                    console.log(result);
-                }
-                db.end();
-            })
+
+            const q = `SELECT * FROM \`sTUDENT ATT\` WHERE branch = ?;`;
+            return new Promise((resolve, reject) => {
+                db.query(q, [currentBranch], (err, result) => {
+                    if (err) {
+                        console.error("Error occurred:", err);
+                        reject(err);
+                    } else {
+                        resolve(result);
+                    }
+                    db.end();
+                });
+            });
         }
 
-        const students = fetchattendance("aiml")
+        async function initialize() {
+            students = await fetchAttendance();
+            // Show attributes based on the current branch
+            showAttributes(); 
+        }
 
-        function showAttributes(type) {
+        function showAttributes() {
             const attributesDiv = document.getElementById('attributes');
             attributesDiv.innerHTML = `
                 <table>
@@ -95,7 +99,7 @@
                         <tr>
                             <td>${student.regdNo}</td>
                             <td>${student.name}</td>
-                            <td>${type === 'technical' ? student.technicalAttendance : student.nonTechnicalAttendance}</td>
+                            <td>${currentBranch === 'CSE' ? student.technicalAttendance : student.nonTechnicalAttendance}</td>
                         </tr>
                     `).join('')}
                 </table>
@@ -104,7 +108,7 @@
 
         function searchStudent() {
             const searchValue = document.getElementById('search').value;
-            const filteredStudents = students.filter(student => 
+            const filteredStudents = students.filter(student =>
                 student.regdNo.includes(searchValue)
             );
 
@@ -120,16 +124,22 @@
                         <tr>
                             <td>${student.regdNo}</td>
                             <td>${student.name}</td>
-                            <td>${student.technicalAttendance}</td>
+                            <td>${currentBranch === 'CSE' ? student.technicalAttendance : student.nonTechnicalAttendance}</td> <!-- Updated to reflect current branch -->
                         </tr>
                     `).join('')}
                 </table>
             `;
         }
-    </script> 
-    <script>
-        const branch = document.cookie 
-        document.getElementById("title").innerHTML = branch;
+
+        // Update the branch title and fetch students based on branch selection
+        function updateBranch(branch) {
+            currentBranch = branch;
+            document.getElementById("title").innerHTML = branch;
+            initialize(); // Re-fetch attendance based on the new branch
+        }
+
+        // Initialize the app
+        initialize();
     </script>
 </body>
 </html>

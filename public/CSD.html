@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSD</title>
+    <title id="title">CSD</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -40,13 +40,27 @@
             display: inline-block; /* Inline-block to center */
         }
     </style>
-    <script>
+</head>
+<body>
+    <h1 id="title">CSD</h1>
+    <input type="text" id="search" placeholder="Search by RegdNo" oninput="searchStudent()">
+    <div>
+        <button class="button" onclick="updateBranch('Technical')">Technical</button>
+        <button class="button" onclick="updateBranch('Non-Technical')">Non-Technical</button>
+    </div>
+    
+    <div id="attributes"></div>
+    
+    <script type="module">
+        // Sample student data
         const students = [
-            { regdNo: '101', name: 'Alice', technicalAttendance: '95%', nonTechnicalAttendance: '80%' },
-            { regdNo: '102', name: 'Bob', technicalAttendance: '90%', nonTechnicalAttendance: '85%' }
+            { regdNo: '201', name: 'Charlie', technicalAttendance: '92%', nonTechnicalAttendance: '88%' },
+            { regdNo: '202', name: 'David', technicalAttendance: '85%', nonTechnicalAttendance: '90%' }
         ];
+        
+        let currentBranch = 'Technical'; // Default branch
 
-        function showAttributes(type) {
+        function showAttributes() {
             const attributesDiv = document.getElementById('attributes');
             attributesDiv.innerHTML = `
                 <table>
@@ -59,7 +73,7 @@
                         <tr>
                             <td>${student.regdNo}</td>
                             <td>${student.name}</td>
-                            <td>${type === 'technical' ? student.technicalAttendance : student.nonTechnicalAttendance}</td>
+                            <td>${currentBranch === 'Technical' ? student.technicalAttendance : student.nonTechnicalAttendance}</td>
                         </tr>
                     `).join('')}
                 </table>
@@ -68,7 +82,7 @@
 
         function searchStudent() {
             const searchValue = document.getElementById('search').value;
-            const filteredStudents = students.filter(student => 
+            const filteredStudents = students.filter(student =>
                 student.regdNo.includes(searchValue)
             );
 
@@ -84,22 +98,21 @@
                         <tr>
                             <td>${student.regdNo}</td>
                             <td>${student.name}</td>
-                            <td>${student.technicalAttendance}</td>
+                            <td>${currentBranch === 'Technical' ? student.technicalAttendance : student.nonTechnicalAttendance}</td>
                         </tr>
                     `).join('')}
                 </table>
             `;
         }
+
+        function updateBranch(branch) {
+            currentBranch = branch;
+            document.getElementById("title").innerHTML = branch;
+            showAttributes(); // Refresh the displayed attributes based on the selected branch
+        }
+
+        // Initialize the app
+        showAttributes();
     </script>
-</head>
-<body>
-    <h1>CSD</h1>
-    <input type="text" id="search" placeholder="Search by RegdNo" oninput="searchStudent()">
-    <div>
-        <button class="button" onclick="showAttributes('technical')">Technical</button>
-        <button class="button" onclick="showAttributes('non-technical')">Non-Technical</button>
-    </div>
-    
-    <div id="attributes"></div>
 </body>
 </html>
