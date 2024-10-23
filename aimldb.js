@@ -13,7 +13,7 @@ function fetchattendance(branch){
     
     });
     
-    const q = "SELECT * FROM `sTUDENT ATT`;"
+    const q = "SELECT * FROM sTUDENT ATT;"
     db.query(q, (err, result)=>{
         if (err){
             console.log("error occurred " + err);
@@ -22,5 +22,5 @@ function fetchattendance(branch){
             console.log(result);
         }
         db.end();
-    })
+    })
 }
