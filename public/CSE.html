@@ -8,13 +8,13 @@
         body {
             font-family: 'Arial', sans-serif;
             margin: 20px;
-            background-color: #f0f8ff; /* Light blue background */
+            background-color: #f0f8ff; 
             text-align: center;
-            color: #333; /* Dark text color for better contrast */
+            color: #333;
         }
 
         h1 {
-            color: #4d604d; /* Dark green for heading */
+            color: #4d604d; 
             margin-bottom: 20px;
             cursor: pointer; /* Change cursor to pointer to indicate it's clickable */
         }
@@ -84,16 +84,16 @@
         }
 
         th {
-            background-color: #4CAF50; /* Green header background */
+            background-color: #4CAF50; 
             color: white; /* White text for header */
         }
 
         tr:nth-child(even) {
-            background-color: #f2f2f2; /* Light gray for alternate rows */
+            background-color: #f2f2f2;
         }
 
         tr:hover {
-            background-color: #ddd; /* Gray on row hover */
+            background-color: #ddd;
         }
     </style>
 </head>
@@ -116,12 +116,12 @@
     <div id="attributes"></div>
     
     <script>
-        let students = []; // Declare students variable
-        let currentBranch = 'CSE'; // Default branch
-        let currentAttendanceType = 'technical'; // Default attendance type
+        let students = [];
+        let currentBranch = 'CSE'; 
+        let currentAttendanceType = 'technical'; 
 
         async function fetchAttendance() {
-            const response = await fetch('/attendance'); // Fetch attendance data from the server
+            const response = await fetch('/attendance'); 
             const data = await response.json();
             return data;
         }
@@ -171,18 +171,16 @@
             `;
         }
 
-        // Update the branch title and fetch students based on branch and attendance type
         async function updateBranch(branch, attendanceType) {
             currentBranch = branch;
             currentAttendanceType = attendanceType;
             document.getElementById("title").innerHTML = branch;
 
-            // Fetch attendance data based on branch and attendance type
             try {
                 const response = await fetch(`/attendance?branch=${currentBranch}&attendanceType=${currentAttendanceType}`);
                 if (response.ok) {
-                    students = await response.json(); // Get data from response
-                    showAttributes(); // Show the updated data
+                    students = await response.json(); 
+                    showAttributes(); 
                 } else {
                     console.error('Failed to fetch attendance:', response.statusText);
                 }
@@ -196,7 +194,6 @@
             dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
         }
 
-        // Close dropdown if clicking outside
         window.onclick = function(event) {
             if (!event.target.matches('#title')) {
                 const dropdown = document.getElementById('branch-dropdown');
