@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const mysql = require('mysql2');
 const bcrypt = require('bcrypt');
 
-// Initialize the Express application
+// Initialize the Express application    
 const app = express();
 const PORT = 3000;
 
