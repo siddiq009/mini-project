@@ -10,6 +10,7 @@
             margin: 20px;
             background-color: #d4edda; /* Light green background */
             text-align: center; /* Center text */
+            position: relative; /* Allow absolute positioning of dropdown */
         }
         .button {
             padding: 10px 20px;
@@ -39,10 +40,40 @@
             max-width: 300px; /* Maximum width */
             display: inline-block; /* Inline-block to center */
         }
+        h1 {
+            cursor: pointer;
+        }
+        .branch-dropdown a:hover {
+            background-color: #ddd; /* Light gray on hover */
+        }
+        .branch-dropdown a {
+            display: block;
+            padding: 5px 10px;
+            color: #333;
+            text-decoration: none;
+        }
+        .branch-dropdown {
+            display: none; /* Hidden by default */
+            position: absolute;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000; /* Ensure dropdown appears on top */
+        }
     </style>
 </head>
 <body>
-    <h1 id="title">CSD</h1>
+    <h1 id="title" onclick="toggleDropdown()">CSD</h1>
+    
+    <div class="branch-dropdown" id="branch-dropdown">
+        <a href="cai.html">CAI</a>
+        <a href="csm.html">CSM</a>
+        <a href="aiml.html">AIML</a>
+        <a href="cse.html">CSE</a>
+    </div>
+    
     <input type="text" id="search" placeholder="Search by RegdNo" oninput="searchStudent()">
     <div>
         <button class="button" onclick="updateBranch('Technical')">Technical</button>
@@ -50,19 +81,33 @@
     </div>
     
     <div id="attributes"></div>
-    
-    <script type="module">
+
+    <script>
+        // Function to toggle the dropdown visibility
+        function toggleDropdown() {
+            const dropdown = document.getElementById('branch-dropdown');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Close dropdown if clicking outside
+        window.onclick = function(event) {
+            const dropdown = document.getElementById('branch-dropdown');
+            if (!event.target.matches('#title') && !event.target.closest('.branch-dropdown')) {
+                dropdown.style.display = 'none';
+            }
+        };
+
         // Sample student data
         const students = [
-            { regdNo: '201', name: 'Charlie', technicalAttendance: '92%', nonTechnicalAttendance: '88%' },
-            { regdNo: '202', name: 'David', technicalAttendance: '85%', nonTechnicalAttendance: '90%' }
+            { regdNo: '301', name: 'Emily', technicalAttendance: '88%', nonTechnicalAttendance: '80%' },
+            { regdNo: '302', name: 'Frank', technicalAttendance: '78%', nonTechnicalAttendance: '90%' }
         ];
         
-        let currentBranch = 'Technical'; // Default branch
+        let currentBranch = ''; // Start with no current branch
 
         function showAttributes() {
             const attributesDiv = document.getElementById('attributes');
-            attributesDiv.innerHTML = `
+            attributesDiv.innerHTML = ` 
                 <table>
                     <tr>
                         <th>RegdNo</th>
@@ -105,14 +150,16 @@
             `;
         }
 
+        // Function to update the branch (Technical or Non-Technical)
         function updateBranch(branch) {
             currentBranch = branch;
-            document.getElementById("title").innerHTML = branch;
-            showAttributes(); // Refresh the displayed attributes based on the selected branch
+            document.getElementById("title").innerHTML = `CSD`;
+            if (branch === 'Technical' || branch === 'Non-Technical') {
+                showAttributes(); // Show data when either branch is clicked
+            } else {
+                document.getElementById('attributes').innerHTML = ''; // Clear attributes for other branches
+            }
         }
-
-        // Initialize the app
-        showAttributes();
     </script>
 </body>
 </html>
