@@ -152,6 +152,17 @@
             errorMessage.innerHTML = "An error occurred while logging in.";
         });
     }
+    function login() {
+        // Assume userRole is determined based on login
+        const userRole = "placement"; // Simulating "placement" role
+ 
+        if (userRole === "placement") {
+            window.location.href = "index3.html"; // Redirect to branch selection
+        } else {
+            // Handle other roles
+            window.location.href = "index2.html";
+        }
+    }
 </script>
 
 </body>
