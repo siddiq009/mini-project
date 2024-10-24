@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRT Dashboard</title>
+    <style>
+        /* Global Styles */
+        body {
+            background-color: #f0f0f0;
+            margin: 0;
+            height: 100vh;
+            font-family: 'Arial', sans-serif;
+            color: #333;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: #1a1a1a;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1000;
+        }
+
+        header nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        header nav a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: bold;
+            margin: 0 20px;
+            font-size: 18px;
+            position: relative;
+            padding: 10px 15px;
+            transition: color 0.3s ease;
+        }
+
+        header nav a::before {
+            content: "";
+            position: absolute;
+            width: 0;
+            height: 3px;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #ffcc00;
+            transition: width 0.3s ease;
+        }
+
+        header nav a:hover::before {
+            width: 100%;
+        }
+
+        header nav a:hover {
+            color: #ffcc00;
+        }
+
+        /* Section Styles */
+        section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url("project images/placement bck image.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+            height: 800px;
+            width: 100%;
+            flex-direction: column;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        section nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            text-align: center;
+        }
+
+        section nav ul li {
+            margin: 20px 0;
+        }
+
+        section nav a {
+            font-size: 35px;
+            padding: 15px 30px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            border-radius: 5px;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            display: inline-block;
+        }
+
+        section nav a:hover {
+            background-color: #ffcc00;
+            color: #333;
+            transform: translateY(-5px); /* Subtle lift on hover */
+        }
+
+        /* Footer Styles */
+        footer {
+            display: flex;
+            font-size: 24px;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-color: #1a1a1a;
+            color: #f0f0f0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .marquee {
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            animation: marquee 10s linear infinite;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* Responsive Styles */
+        @media(max-width: 768px) {
+            section {
+                background-size: cover;
+                height: auto;
+                padding: 20px 0;
+            }
+
+            section nav a {
+                font-size: 28px;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="#" onclick="navigateTo('index2.html')">Home</a>
+            <a href="#" onclick="navigateTo('contact.html')">Contact</a>
+            <a href="#" onclick="navigateTo('aboutus.html')">About Us</a>
+            <a href="index.html" onclick="navigateTo('logout.html')">Logout</a>
+        </nav>
+    </header>
+
+    <!-- Main Section -->
+    <section>
+        <nav>
+            <ul>
+                <li><a href="index2.html" onclick="navigate('cse')"><b>CSE</b></a></li> 
+                <li><a href="index2.html" onclick="navigate('aiml')"><b>AIML</b></a></li>
+                <li><a href="index2.html" onclick="navigate('csd')"><b>CSD</b></a></li>
+                <li><a href="index2.html" onclick="navigate('csm')"><b>CSM</b></a></li>
+                <li><a href="index2.html" onclick="navigate('cai')"><b>CAI</b></a></li>
+            </ul>
+        </nav>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="marquee">
+            <b>Contact us: vigananlara@gmail.com</b>
+        </div>
+    </footer>
+
+<script>
+    // JavaScript function to handle navigation
+    function navigate(branch) {
+        document.cookie = "branch=" + branch; // Store branch name in cookie
+        const page = branch.toLowerCase() + ".html"; // Construct the page URL
+        window.location.href = page; // Redirect to the corresponding page
+    }
+</script>
+</body>
+</html>

@@ -3,121 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Attendance</title>
+    <title>Attendance and Topics</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            font-size: 25px;
             margin: 0;
-            height: 70vh; /* Full viewport height */
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            padding: 0;
+            background-color: #d4edba; /* Set the background color of the webpage */
         }
-        .content-container {
+        .container {
             text-align: center;
+            padding: 20px;
         }
-        .form-container {
-            margin: 20px;
+        h1 {
+            margin-bottom: 20px;
         }
-        input[type="text"], input[type="number"] {
-            padding: 8px;
-            margin: 10px 0;
-            width: 200px;
+        .buttons {
+            margin-bottom: 30px;
         }
         button {
             padding: 10px 20px;
-            background-color: green;
-            color: white;
-            border: none;
+            font-size: 16px;
+            margin: 10px;
             cursor: pointer;
+            background-color: #f6d5a8; /* Button background color */
+            border: none; /* Remove default border */
+            border-radius: 5px; /* Rounded corners */
+            transition: background-color 0.3s; /* Smooth transition for hover effect */
+        }
+        button:hover {
+            background-color: #e2b69f; /* Darker shade on hover */
+        }
+        .topics-section {
+            display: flex;
+            padding: 0 20px;
+            height: calc(100vh - 160px); /* Full height minus the space for header and buttons */
+        }
+        .topics-list {
+            list-style-type: none;
+            padding: 0;
+            width: 200px; /* Set a fixed width for the topics list */
+            margin-right: 20px;
+        }
+        .topics-list li {
+            margin: 5px 0;
+            padding: 5px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #4a4a4a; /* Set topic text color */
+        }
+        .table-container {
+            display: none;
+            flex-grow: 1; /* This will make the table take up the remaining space */
+            overflow: auto; /* To handle scrolling if the table gets too large */
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
         }
-
-        /* Style to make th elements appear in a single column */
-        thead {
-            display: block;
+        table, th, td {
+            border: 1px solid black;
         }
-
-        #attendanceTable th {
-            display: block;
-            padding: 10px;
-            border: 1px solid #ddd;
-            background-color: green;
-            color: white;
-            text-align: left;
+        th {
+            background-color: #4d604d; /* Set header color */
+            color: white; /* Set header text color to white for contrast */
         }
-
-        tbody {
-            display: table-row-group;
-        }
-
-        tbody tr {
-            display: flex;
-            flex-direction: column;
-        }
-
         th, td {
             padding: 10px;
-            text-align: left;
-            border: 1px solid #ddd;
+            text-align: center;
+        }
+        td {
+            background-color: #f0f0f0; /* Light background for table data cells */
         }
     </style>
 </head>
 <body>
-    <div class="content-container">
-        <h1>Student Attendance</h1>
 
-        <div class="form-container">
-            <form id="attendanceForm" action="/submit_attendance" method="POST">
-                <label for="student_id">Student ID:</label>
-                <input type="text" id="student_id" name="student_id" required><br>
-            </form>
+    <div class="container">
+        <h1>Attendance Percentage: 85%</h1>
+
+        <div class="buttons">
+            <button onclick="showTopics('technical')">Technical</button>
+            <button onclick="showTopics('non-technical')">Non-Technical</button>
+        </div>
+    </div>
+
+    <div class="topics-section">
+        <div>
+            <h2 id="topics-heading" style="display:none;">Topics</h2>
+            <ul id="technical-topics" class="topics-list">
+                <li onclick="showTable('Python', '01-Oct-2024 to 10-Oct-2024')">Python</li>
+                <li onclick="showTable('C Language', '15-Oct-2024 to 25-Oct-2024')">C Language</li>
+                <li onclick="showTable('DSA', '01-Nov-2024 to 10-Nov-2024')">DSA</li>
+                <li onclick="showTable('Computer Networks', '12-Nov-2024 to 22-Nov-2024')">Computer Networks</li>
+                <li onclick="showTable('Java', '25-Nov-2024 to 05-Dec-2024')">Java</li>
+                <li onclick="showTable('OOPS Concept', '07-Dec-2024 to 15-Dec-2024')">OOPS Concept</li>
+                <li onclick="showTable('DBMS', '17-Dec-2024 to 27-Dec-2024')">DBMS</li>
+                <li onclick="showTable('OS', '01-Jan-2025 to 10-Jan-2025')">OS</li>
+            </ul>
+            <ul id="non-technical-topics" class="topics-list">
+                <li onclick="showTable('Ratio and Proportion', '01-Oct-2024 to 05-Oct-2024')">Ratio and Proportion</li>
+                <li onclick="showTable('Profit and Loss', '10-Oct-2024 to 15-Oct-2024')">Profit and Loss</li>
+                <li onclick="showTable('Coding and Decoding', '20-Oct-2024 to 25-Oct-2024')">Coding and Decoding</li>
+                <li onclick="showTable('Partnerships', '01-Nov-2024 to 05-Nov-2024')">Partnerships</li>
+                <li onclick="showTable('LCM and HCF', '10-Nov-2024 to 15-Nov-2024')">LCM and HCF</li>
+                <li onclick="showTable('Simple Interest', '20-Nov-2024 to 25-Nov-2024')">Simple Interest</li>
+                <li onclick="showTable('Averages', '01-Dec-2024 to 05-Dec-2024')">Averages</li>
+                <li onclick="showTable('Distance, Time and Speed', '10-Dec-2024 to 15-Dec-2024')">Distance, Time and Speed</li>
+            </ul>
         </div>
 
-        <!-- Display previously added data (will be populated by JS) -->
-        <table id="attendanceTable">
-            <thead>
-                <tr>
-                    <th>Student ID</th>
-                    <th>Name</th>
-                    <th>Attendance Percentage</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Data will be populated here -->
-            </tbody>
-        </table>
+        <div class="table-container" id="table-container">
+            <h2 id="topic-name"></h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Dates</th>
+                        <th>Conducted Classes</th>
+                        <th>Attended Classes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="topic-dates"></td>
+                        <td>10</td>
+                        <td>8</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <script>
-        document.getElementById('fetchAttendanceBtn').addEventListener('click', fetchAttendanceData);
+        function showTopics(type) {
+            // Hide both topic lists initially
+            document.getElementById('technical-topics').style.display = 'none';
+            document.getElementById('non-technical-topics').style.display = 'none';
 
-        function fetchAttendanceData() {
-            fetch('/attendance')
-                .then(response => response.json())
-                .then(data => {
-                    const tbody = document.querySelector('#attendanceTable tbody');
-                    tbody.innerHTML = ''; // Clear existing data
+            // Show the appropriate topics based on the clicked button
+            if (type === 'technical') {
+                document.getElementById('technical-topics').style.display = 'block';
+            } else if (type === 'non-technical') {
+                document.getElementById('non-technical-topics').style.display = 'block';
+            }
 
-                    data.forEach(row => {
-                        const tr = document.createElement('tr');
-                        tr.innerHTML = `
-                            <td>${row.student_id}</td>
-                            <td>${row.name}</td>
-                            <td>${row.attendance_percentage}</td>
-                        `;
-                        tbody.appendChild(tr);
-                    });
-                })
-                .catch(error => {
-                    console.error('Error fetching attendance data:', error);
-                });
+            // Show the "Topics" heading when either button is clicked
+            document.getElementById('topics-heading').style.display = 'block';
+
+            // Hide the table if it was previously displayed
+            document.getElementById('table-container').style.display = 'none';
+        }
+
+        function showTable(topic, dates) {
+            // Set the table heading to the topic name
+            document.getElementById('topic-name').innerText = topic;
+
+            // Set the dates in the table's "Dates" column
+            document.getElementById('topic-dates').innerText = dates;
+
+            // Show the table container
+            document.getElementById('table-container').style.display = 'block';
         }
     </script>
+
 </body>
 </html>

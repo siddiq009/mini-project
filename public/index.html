@@ -7,7 +7,6 @@
     <style>
         /* Background image and opacity */
         body {
-            
             font-family: Arial, sans-serif;
             background-image: url("project images/background image2.jpg"); /* Replace with your image URL */
             background-size: cover;
@@ -34,7 +33,6 @@
         }
 
         .login-container {
-            
             background-color: white;
             padding: 40px;
             border-radius: 15px;
@@ -87,8 +85,7 @@
         }
 
         .user-select {
-            margin-bottom: 15px;
-            
+            margin-bottom: 15px; 
         }
     </style>
 </head>
@@ -120,40 +117,53 @@
 </div>
 
 <script>
+    function updateUserLabel() {
+        var selectedRole = document.getElementById("userRole").value; 
+        document.getElementById("userLabel").innerText = "Login as: " + selectedRole; 
+    }
+
     function validateLogin() {
-    var username = document.getElementById("username").value.trim();
-    var password = document.getElementById("password").value.trim();
-    var selectedRole = document.getElementById("userRole").value.trim();
-    var errorMessage = document.getElementById("errorMessage");
+        var username = document.getElementById("username").value.trim();
+        var password = document.getElementById("password").value.trim();
+        var selectedRole = document.getElementById("userRole").value.trim();
+        var errorMessage = document.getElementById("errorMessage");
 
-    fetch('/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            username: username,
-            password: password,
-            role: selectedRole
+        fetch('/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                username: username,
+                password: password,
+                role: selectedRole
+            })
         })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Redirect to the appropriate page if successful
-            window.location.href = data.redirectPage;
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Redirect to the appropriate page if successful
+                window.location.href = data.redirectPage;
+            } else {
+                // Show error message
+                errorMessage.innerHTML = data.message;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            errorMessage.innerHTML = "An error occurred while logging in.";
+        });
+    }
+    function login() {
+        // Assume userRole is determined based on login
+        const userRole = "placement"; // Simulating "placement" role
+ 
+        if (userRole === "placement") {
+            window.location.href = "index3.html"; // Redirect to branch selection
         } else {
-            // Show error message
-            errorMessage.innerHTML = data.message;
+            // Handle other roles
+            window.location.href = "index2.html";
         }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        errorMessage.innerHTML = "An error occurred while logging in.";
-    });
-}
-
-
+    }
 </script>
-
 
 </body>
 </html>

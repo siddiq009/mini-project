@@ -20,7 +20,7 @@ body {
     text-align: center;
     box-shadow: 5px 4px 8px rgba(0,0,0,0.1);
     border-radius: 4%;
-   
+}
 input[type="text"], input[type="password"] {
     font-size: 20px;
     width: 100%;
